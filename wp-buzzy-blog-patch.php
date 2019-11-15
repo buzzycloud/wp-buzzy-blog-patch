@@ -12,6 +12,8 @@
  * License: GPLv2 or later
  */
 defined( 'ABSPATH' ) or die( 'ERROR!' );
+require('env.php');
+require('helpers.php');
 /** allow access via rest api while maintaing force-login  */
 include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 
@@ -25,3 +27,9 @@ if ( is_plugin_active( 'wp-force-login/wp-force-login.php' ) ) {
   //plugin is activated
   add_filter( 'rest_authentication_errors', '__return_true' );
 } 
+
+// notify me when there are new comments
+add_action('wp_insert_comment', 'notify_new_comment', 10, 2);
+
+// Add the hook action
+add_action('transition_post_status', 'notify_new_post', 10, 3);
